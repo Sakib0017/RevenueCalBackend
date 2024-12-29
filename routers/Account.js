@@ -4,6 +4,28 @@ const router = express.Router();
 const app = express();
 app.use(express.json()); // Ensure the body is parsed
 
+router.get('/api/account/:id',  (req, res) => {
+  const id = req.params.id;
+  
+    Account.findById({_id:id})
+    .then(accounts => res.json(accounts))
+    .catch(err => res.json(err))
+});
+
+router.put('/api/save-accounts/:id', async (req, res) => {
+  const id = req.params.id;
+  
+  Account.findByIdAndUpdate({_id:id}, {accountType:req.body.accountType,accountHead:req.body.accountHead,amount:req.body.amount, status:req.body.status})
+  .then(accounts => res.json(accounts))
+  .catch(err => res.json(err))
+});
+router.delete('/api/accounts/:id',  (req, res) => {
+  const id = req.params.id;
+  
+    Account.findByIdAndDelete({_id:id})
+    .then(res => res.json(res))
+    .catch(err => res.json(err))
+});
 router.post('/api/save-account', async (req, res) => {
   try {
     const { accountType, accountHead, amount, status } = req.body;

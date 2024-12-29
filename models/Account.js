@@ -5,6 +5,8 @@ const accountSchema = new mongoose.Schema({
   accountHead: { type: String, required: true },
   amount: { type: Number, required: true },
   status: { type: String, required: true },
+  createdAt: { type: Date, default: Date.now },  // Manually set the default value to current date/time
+  updatedAt: { type: Date, default: Date.now },
 });
 
 const Account = mongoose.model('Account', accountSchema);

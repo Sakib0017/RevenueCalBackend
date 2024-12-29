@@ -1,10 +1,10 @@
 const express = require('express');
 const mongoose = require('mongoose');
 require('dotenv').config();
-
+const bodyParser = require('body-parser');
 const app = express();
 const port = process.env.PORT || 5000;
-
+app.use(bodyParser.json());
 // Middleware
 const cors = require('cors');
 app.use(cors());
@@ -31,6 +31,10 @@ app.use('/api/credit', CreditdebitRoute);
 const Account = require('./routers/Account');
 app.use(Account);
 app.use('/api/accounts', Account);
+app.use('/api/accounts/:id', Account);
+app.use('/api/account/:id', Account);
+app.use('/api/save-accounts/:id', Account);
+
 app.listen(port, () => {
   console.log(`Server is running on port ${port}`);
 });
