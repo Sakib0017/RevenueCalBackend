@@ -2,8 +2,39 @@ const express = require('express');
 const Account = require('../models/Account');
 const router = express.Router();
 const app = express();
-app.use(express.json()); // Ensure the body is parsed
 
+app.use(express.json()); // Ensure the body is parsed
+router.get('/api/current-date', (req, res) => {
+  const currentDate = new Date();
+  res.json({ date: currentDate });
+});
+
+
+
+router.get('/api/calculate-totals', async (req, res) => {
+  try {
+    const accounts = await Account.find();
+    
+    // Separate accounts into credit and debit
+    const creditAccounts = accounts.filter(account => account.accountType === 'Credit');
+    const debitAccounts = accounts.filter(account => account.accountType === 'Debit');
+
+    // Calculate totals
+    const totalCredit = creditAccounts.reduce((total, account) => total + parseFloat(account.amount), 0).toFixed(2);
+    const totalDebit = debitAccounts.reduce((total, account) => total + parseFloat(account.amount), 0).toFixed(2);
+
+    // Calculate profit (Credit - Debit)
+    const profit = (parseFloat(totalCredit) - parseFloat(totalDebit)).toFixed(2);
+
+    res.status(200).json({
+      totalCredit,
+      totalDebit,
+      profit
+    });
+  } catch (error) {
+    res.status(500).json({ error: 'Error calculating totals' });
+  }
+});
 router.get('/api/account/:id',  (req, res) => {
   const id = req.params.id;
   
