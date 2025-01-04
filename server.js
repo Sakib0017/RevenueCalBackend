@@ -118,6 +118,10 @@ app.use('/api/current-date', Account);
 app.use('/api/calculate-totals', Account);
 const Total = require('./routers/Total');
 app.use('/api/totals', Total);
+const DebitRoute = require('./routers/DebitRoute');
+app.use('/api/debit', DebitRoute);
+const CreditRoute = require('./routers/CreditRoute');
+app.use('/api/crdt', CreditRoute);
 app.listen(port, () => {
   console.log(`Server is running on port ${port}`);
 });
